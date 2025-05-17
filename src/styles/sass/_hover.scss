@@ -1,0 +1,15 @@
+// Clases personalizadas de hover por color
+@each $name, $color in $theme-colors {
+    .hover-bg-#{$name} {
+      transition: background-color 0.4s;
+  
+      &:hover,
+      &.active {
+        background-color: rgba($color, 0.75) !important;
+        .nav-link {
+          color: #ffffff !important;
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,65 @@
+@import 'bootstrap/scss/functions';
+
+@import 'variables';
+
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+
+// Include any default map overrides here
+$azul: #003d79;
+$dorado: #d59f0f;
+
+$custom-colors: (
+  'azul': $azul,
+  'dorado': $dorado,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/bootstrap';
+
+@import 'gradients';
+@import 'extends';
+@import 'table';
+@import 'utilities';
+@import 'sidebar';
+@import 'hover';
+@import 'tabs';
+
+//Add additional custom code here
+
+@include media-breakpoint-up(lg) {
+  .bd-layout {
+    display: grid;
+    grid-template-areas: 'sidebar main';
+    grid-template-columns: 1fr 5fr;
+    gap: $spacer * 1.5;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .bd-sidebar {
+    grid-area: sidebar;
+    position: sticky;
+    top: ($spacer * 3);
+    height: calc(100vh - 6rem);
+  }
+}
+
+ul.list-unstyled li {
+  padding: 0.5rem 0;
+  a {
+    color: $azul;
+    transition: color 0.2s;
+    text-decoration: none;
+    &:hover {
+      color: $dorado;
+    }
+  }
+}
+
+.btn-dorado {
+  color: $white !important;
+}

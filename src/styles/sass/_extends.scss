@@ -1,0 +1,73 @@
+.box {
+  @extend .shadow-sm;
+  @extend .rounded;
+  @extend .bg-white;
+  @extend .p-3;
+
+  &.active {
+    @extend .bg-primary;
+    @extend .bg-opacity-75;
+    @extend .text-white;
+  }
+
+  &.disabled {
+    @extend .text-muted;
+    cursor: not-allowed !important;
+  }
+}
+
+.unlink {
+  @extend .text-decoration-none;
+  @extend .text-dark;
+}
+
+.flex-center {
+  @extend .d-flex;
+  @extend .justify-content-center;
+  @extend .align-items-center;
+}
+
+.option {
+  @extend .box;
+  @extend .py-2;
+
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:has(input:checked) {
+    @extend .bg-primary;
+    @extend .bg-opacity-75;
+    @extend .text-white;
+  }
+
+  input[type='radio']:checked {
+    border: 1px solid #ffffff;
+    @extend .bg-primary;
+    @extend .bg-opacity-75;
+  }
+
+  &:hover {
+    background-color: #f1f1f1 !important;
+  }
+
+  &:has(input:disabled) {
+    @extend .bg-light;
+    @extend .text-muted;
+    cursor: not-allowed;
+  }
+}
+
+.border-top-azul {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: $azul;
+    border-radius: 5px 5px 0 0;
+  }
+}

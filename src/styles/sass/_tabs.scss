@@ -1,0 +1,16 @@
+.tab-pane.fade {
+  transition: opacity 10s linear !important;
+}
+
+.nav-tabs.style-box {
+  border-bottom: 0cap;
+  gap: 0.8rem;
+  .nav-item .nav-link {
+    @extend .box;
+    @extend .py-2;
+    @extend .text-black;
+
+    margin: 0 !important;
+    border: 0;
+  }
+}

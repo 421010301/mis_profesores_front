@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { Roboto } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '@/styles/sass/bootstrap.scss';
+import BootstrapClient from "@/components/bootstrap-client";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const roboto = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
   subsets: ["latin"],
 });
 
@@ -23,8 +21,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="es">
+      <body className={`${roboto.className}`}>
+        <BootstrapClient />
         {children}
       </body>
     </html>

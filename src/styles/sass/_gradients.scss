@@ -1,0 +1,26 @@
+// Este bloque crea una clase por cada color del tema, en cada dirección.
+@each $color-name, $color-value in $theme-colors {
+  .bg-gradient-#{$color-name}-top {
+    background-image: linear-gradient(
+      to top,
+      rgba($color-value, 0.5),
+      $body-bg
+    );
+  }
+
+  .bg-gradient-#{$color-name}-bottom {
+    background-image: linear-gradient(
+      to bottom,
+      rgba($color-value, 0.5),
+      $body-bg
+    );
+  }
+
+  .bg-gradient-#{$color-name}-left {
+    background-image: linear-gradient(to left, rgba($color-value, 0.5), $body-bg);
+  }
+
+  .bg-gradient-#{$color-name}-right {
+    background-image: linear-gradient(to right, rgba($color-value, 0.5), $body-bg);
+  }
+}
