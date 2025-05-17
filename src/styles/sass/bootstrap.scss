@@ -96,3 +96,12 @@ ul.list-unstyled li {
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0,0,0,0.4); /* un poco más oscuro al pasar el puntero */
 }
+
+textarea {
+  /* Ajusta dinámicamente el alto al contenido */
+  field-sizing: content;
+  max-height: 200px; /* Altura máxima */
+  /* Opcional: evitar que el usuario redimensione manualmente */
+  resize: none;
+  overflow: hidden;
+}

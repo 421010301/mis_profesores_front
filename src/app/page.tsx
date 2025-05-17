@@ -4,6 +4,11 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Input from "@/components/input";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import TextArea from "@/components/text-area";
+import Button from "@/components/button";
+import Loading from "@/components/loading";
 
 type Message = { sender: "user" | "bot"; text: string };
 
@@ -11,6 +16,8 @@ export default function Page() {
   const [movedUp, setMovedUp] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // ← estado de carga
 
   const imageVariants = {
     initial: { opacity: 0, top: "25%", y: "-50%" },
@@ -33,28 +40,47 @@ export default function Page() {
     },
   };
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     const text = inputValue.trim();
     if (!text) return;
 
-    // Si es el primer mensaje, hacemos aparecer el chat
     if (!movedUp) setMovedUp(true);
 
-    // Añadir mensaje de usuario
+    // 1) Añadimos el mensaje del usuario a la UI
     setMessages((prev) => [...prev, { sender: "user", text }]);
     setInputValue("");
+    setIsLoading(true); // ← activamos carga
 
-    // Simular respuesta del bot
-    setTimeout(() => {
+    // 2) Mandamos al backend
+    try {
+      const res = await fetch("http://127.0.0.1:8000/consulta-genai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          conversation_id: conversationId,
+          messages: [{ role: "user", content: text }],
+        }),
+      });
+      const { conversation_id, respuesta } = await res.json();
+
+      // 3) Guardamos (o actualizamos) el conversation_id
+      setConversationId(conversation_id);
+
+      // 4) Añadimos la respuesta del bot a la UI
+      setMessages((prev) => [...prev, { sender: "bot", text: respuesta }]);
+    } catch (err) {
+      console.error("Error llamando al API:", err);
       setMessages((prev) => [
         ...prev,
         {
           sender: "bot",
-          text: "¡Entendido! Aquí tienes la información que pediste…",
+          text: "Lo siento, hubo un error al conectar con el servidor.",
         },
       ]);
-    }, 500);
+    } finally {
+      setIsLoading(false); // ← desactivamos carga
+    }
   };
 
   return (
@@ -81,15 +107,19 @@ export default function Page() {
         {movedUp && (
           <motion.div
             className="container vh-100 position-absolute start-50 translate-middle-x scrollbar"
-            style={{ transform: "translateX(-50%)", marginTop: "125px" }}
+            style={{
+              transform: "translateX(-50%)",
+              marginTop: "125px",
+            }}
             variants={chatVariants}
             initial="hidden"
             animate="visible"
             exit="hidden"
           >
+            {/* Mensajes */}
             <div
-              className="d-flex flex-column h-100 p-3"
-              style={{ overflowY: "auto" }}
+              className="d-flex flex-column p-3"
+              style={{ overflowY: "auto", maxHeight: "80vh" }}
             >
               {messages.map((msg, idx) => (
                 <div
@@ -100,11 +130,17 @@ export default function Page() {
                 >
                   <div
                     className={`p-2 rounded-pill ${
-                      msg.sender === "user" ? "bubble-user" : "bubble-bot"
+                      msg.sender === "user" ? "bg-dark px-3" : "bubble-bot"
                     }`}
                     style={{ maxWidth: "70%" }}
                   >
-                    {msg.text}
+                    {msg.sender === "bot" ? (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        {msg.text}
+                      </ReactMarkdown>
+                    ) : (
+                      msg.text
+                    )}
                   </div>
                 </div>
               ))}
@@ -130,7 +166,7 @@ export default function Page() {
 
         <motion.form
           onSubmit={handleSend}
-          className="position-absolute start-50 translate-middle-x"
+          className="position-absolute start-50 translate-middle-x d-flex"
           variants={btnVariants}
           initial="initial"
           animate={movedUp ? "down" : "centered"}
@@ -139,9 +175,27 @@ export default function Page() {
           <Input
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            className={{ container: "w-500px" }}
+            className={{ container: "w-250px w-md-700px" }}
             placeholder="Escribe aquí tu pregunta"
+            disabled={isLoading} // ← deshabilitado si carga
           />
+          <div>
+            <Button
+              type="submit"
+              className="ms-2 text-white"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+              ) : (
+                <i className="bi bi-send"></i>
+              )}
+            </Button>
+          </div>
         </motion.form>
       </div>
     </div>
