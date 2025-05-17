@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from "react";
 
 export interface InputProps
@@ -57,7 +58,7 @@ export default function Input(props: InputProps) {
           id={inputId}
           name={name}
           type={inputType}
-          className={`form-control bg-white ${className?.input || ""}`}
+          className={`form-control ${className?.input || ""}`}
           {...rest}
         />
         {isPassword && (

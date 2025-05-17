@@ -17,3 +17,14 @@ $hover-scales: (
     }
   }
 }
+
+$min-width: 100px;
+$max-width: 500px;
+$step: 50px; // Saltos de 50px
+
+@for $i from 1 through (($max-width - $min-width) / $step + 1) {
+  $current-width: $min-width + ($i - 1) * $step;
+  .w-#{$current-width} {
+    width: $current-width !important;
+  }
+}

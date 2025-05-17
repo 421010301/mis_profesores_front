@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" data-bs-theme="dark">
       <body className={`${roboto.className}`}>
         <BootstrapClient />
         {children}

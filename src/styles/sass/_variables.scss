@@ -1,8 +1,15 @@
 /* Variables sobreescritas de bootstrap */
-$body-bg: #1e1e1e;
+$body-bg: #ffffff;
+$body-bg-dark: #1c1d21;
 $placeholder-opacity-max: 0.2;
 $placeholder-opacity-min: 0.1;
 
 $modal-content-border-color: none;
 $modal-content-bg: #f5f5f7;
 $modal-lg: 900px;
+
+$primary: #4a9b9d;
+
+.form-control {
+  background-color: lighten($body-bg-dark, 5%) !important;
+}
