@@ -6,11 +6,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Input from "@/components/input";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import TextArea from "@/components/text-area";
 import Button from "@/components/button";
-import Loading from "@/components/loading";
 
 type Message = { sender: "user" | "bot"; text: string };
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Page() {
   const [movedUp, setMovedUp] = useState(false);
@@ -54,7 +53,7 @@ export default function Page() {
 
     // 2) Mandamos al backend
     try {
-      const res = await fetch("http://127.0.0.1:8000/consulta-genai", {
+      const res = await fetch(`${API_URL}/consulta-genai`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
