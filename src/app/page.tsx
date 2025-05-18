@@ -162,7 +162,7 @@ export default function Page() {
               exit={{ opacity: 0, transition: { duration: 0.5 } }}
               className="fw-normal text-muted gradient-text fw-bold px-3 position-absolute"
             >
-              ¿Qué te gustaría saber sobre tus profesores?
+              Comienza con el nombre de tu profesor
             </motion.h2>
           )}
         </AnimatePresence>
