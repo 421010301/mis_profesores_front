@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 Proyecto Mis Profesores - Instrucciones de Uso
 
-## Getting Started
+Este proyecto permite consultar opiniones sobre profesores extraídas de MisProfesores.com. Los estudiantes pueden usar un chatbot para obtener información de manera natural.
 
-First, run the development server:
+Para el funcionamiento de este proyecto se necesita clonar los repositorios:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+https://github.com/421010301/mis_profesores_front
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+https://github.com/421010301/mis_profesores_api
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+dentor de una carpeta llamada mis_profesores, para que quede la siguiente estructura:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+```
+mis_profesores/
+└── mis_profesores_front
+└── mis_profesores_api
+```
 
-To learn more about Next.js, take a look at the following resources:
+Despues desde el proyecto de la api, sacar el docker-compose.yml y la carpeta initdb para que quede asi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+mis_profesores/
+├── mis_profesores_api
+├── mis_profesores_front
+├── docker-compose.yml
+└── initdb
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Para esto tambien se necesinat llenar las variables de ambiente del docker compose y una api key de google genai
 
-## Deploy on Vercel
+* API en `http://localhost:8000`
+* Frontend en `http://localhost:3000`
+* Base de datos MySQL con datos cargados automáticamente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📌 Endpoints clave
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Método | Ruta              | Descripción                         |
+| ------ | ----------------- | ----------------------------------- |
+| POST   | `/consulta-genai` | Consulta con GenAI                  |

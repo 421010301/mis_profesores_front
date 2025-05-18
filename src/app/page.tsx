@@ -8,7 +8,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Button from "@/components/button";
 
-type Message = { sender: "user" | "bot"; text: string };
+type Message = { sender: "user" | "assistant"; text: string };
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Page() {
@@ -16,7 +16,7 @@ export default function Page() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [conversationId, setConversationId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // ← estado de carga
+  const [isLoading, setIsLoading] = useState(false);
 
   const imageVariants = {
     initial: { opacity: 0, top: "25%", y: "-50%" },
@@ -58,27 +58,31 @@ export default function Page() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           conversation_id: conversationId,
-          messages: [{ role: "user", content: text }],
-        }),
+          messages: messages.map((m) => ({
+            role: m.sender,
+            content: m.text,
+          })).concat({ role: "user", content: text }),
+        }),        
       });
       const { conversation_id, respuesta } = await res.json();
+      console.log("Respuesta del API:", respuesta, conversation_id);
 
       // 3) Guardamos (o actualizamos) el conversation_id
       setConversationId(conversation_id);
 
       // 4) Añadimos la respuesta del bot a la UI
-      setMessages((prev) => [...prev, { sender: "bot", text: respuesta }]);
+      setMessages((prev) => [...prev, { sender: "assistant", text: respuesta }]);
     } catch (err) {
       console.error("Error llamando al API:", err);
       setMessages((prev) => [
         ...prev,
         {
-          sender: "bot",
+          sender: "assistant",
           text: "Lo siento, hubo un error al conectar con el servidor.",
         },
       ]);
     } finally {
-      setIsLoading(false); // ← desactivamos carga
+      setIsLoading(false); // ← desactivamos cargac
     }
   };
 
@@ -133,7 +137,7 @@ export default function Page() {
                     }`}
                     style={{ maxWidth: "70%" }}
                   >
-                    {msg.sender === "bot" ? (
+                    {msg.sender === "assistant" ? (
                       <ReactMarkdown remarkPlugins={[remarkGfm]}>
                         {msg.text}
                       </ReactMarkdown>
